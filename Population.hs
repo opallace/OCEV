@@ -33,3 +33,15 @@ evaluate_population formula (chromosome:population) =
             let evaluatedFitness = evaluate_chromosome formula (BinaryChromosome fitness alleles)
             in (BinaryChromosome evaluatedFitness alleles) : evaluate_population formula population
         _ -> evaluate_population formula population
+
+------------------------------------- SELECT POPULATION --------------------------------------------
+best_fitness_selection' :: Population -> Chromosome -> Chromosome
+best_fitness_selection' [] x = x
+best_fitness_selection' ((BinaryChromosome a b):xs) (BinaryChromosome c d)  | a > c = best_fitness_selection' xs (BinaryChromosome a b)
+                                                                            | otherwise = best_fitness_selection' xs (BinaryChromosome c d)
+best_fitness_selection :: Population -> Chromosome
+best_fitness_selection ((BinaryChromosome a b):xs) =  best_fitness_selection' xs (BinaryChromosome a b)
+
+tournament_selection :: Int -> Population -> Population
+tournament_selection _ [] = []
+tournament_selection k population = (best_fitness_selection (take k population)) : (tournament_selection k (drop k population))
