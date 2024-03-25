@@ -12,9 +12,11 @@ readFileLines path = do
 
 main :: IO()
 main = do
-    population <- generate_boolean_population 2 101 (False, True)
+    population <- generate_boolean_population 25 101 (False, True)
 
     content <- readFileLines "entrada.txt"
 
-    let evaluated_population = evaluate_population content population
-    print evaluated_population
+    best_chromossome <- ga population 100 content
+    print best_chromossome
+
+   
